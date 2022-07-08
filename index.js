@@ -91,15 +91,57 @@ function makeStartScreen() {
 }
 makeStartScreen();
 
+function playRound(playerChoice) {
+    const winStatus = winCheck(playerChoice, compChoice());
+    roundOutcome.textContent = winStatus;
+
+    if (winStatus === 'Win') {
+        playerScore += 1;
+    } else if (winStatus === 'Lose') {
+        compScore += 1;
+    }
+
+    currentRound += 1;
+    roundsTracker.textContent = `Round ${currentRound} / ${numberOfRounds}`;
+    scoreTracker.textContent = `Wins: ${playerScore}, Losses: ${compScore}`;
+
+    
+    if (currentRound > numberOfRounds) {
+        mainContainer.textContent = '';
+        if (playerScore > compScore) {
+            mainContainer.textContent = 'You win!';
+        } else if (playerScore < compScore) {
+            mainContainer.textContent = 'You lose...';
+        } else {
+            mainContainer.textContent = 'Draw';
+        }
+
+    }
+    console.log(winStatus);
+}
+
 let currentRound = 1;
+let playerScore = 0;
+let compScore = 0;
+let roundsTracker;
+let scoreTracker;
+let roundOutcome;
+let numberOfRounds;
 function startGame() {
     console.log('startGame() called');
-    const numberOfRounds = document.querySelector('#number-of-rounds-input').value;
+    numberOfRounds = document.querySelector('#number-of-rounds-input').value;
     mainContainer.textContent = '';
 
-    const roundsTracker = document.createElement('p');
+    roundsTracker = document.createElement('p');
     roundsTracker.textContent = `Round ${currentRound}/${numberOfRounds}`;
     mainContainer.appendChild(roundsTracker);
+
+    scoreTracker = document.createElement('p');
+    scoreTracker.textContent = `Wins: ${playerScore}, Losses: ${currentRound - 1 - playerScore}`;
+    mainContainer.appendChild(scoreTracker);
+
+    roundOutcome = document.createElement('p');
+    mainContainer.appendChild(roundOutcome);
 
     const cardContainer = document.createElement('div');
     cardContainer.setAttribute('id', 'card-container');
@@ -109,7 +151,7 @@ function startGame() {
     rockCard.setAttribute('id', 'rock-card');
     rockCard.textContent = 'Rock';
     rockCard.addEventListener('click', () => {
-        playRound('rock');
+        playRound('Rock');
     });
     cardContainer.appendChild(rockCard);
 
@@ -118,16 +160,16 @@ function startGame() {
     paperCard.setAttribute('id', 'paper-card');
     paperCard.textContent = 'Paper';
     paperCard.addEventListener('click', () => {
-        playRound('paper');
+        playRound('Paper');
     })
     cardContainer.appendChild(paperCard);
 
     const scissorsCard = document.createElement('button');
-    scissorsCard.classList.toggle('game-card')
+    scissorsCard.classList.toggle('game-card');
     scissorsCard.setAttribute('id', 'scissors-card');
     scissorsCard.textContent = 'Scissors';
     scissorsCard.addEventListener('click', () => {
-        playRound('scissors');
+        playRound('Scissors');
     });
     cardContainer.appendChild(scissorsCard);
 
