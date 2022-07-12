@@ -91,7 +91,16 @@ function makeStartScreen() {
 }
 makeStartScreen();
 
+
+
+
 let currentRound = 1;
+
+function playRound(playerChoice) {
+    const playerWinStatus = winCheck(playerChoice, compChoice());
+    console.log(playerWinStatus);
+}
+
 function startGame() {
     console.log('startGame() called');
     const numberOfRounds = document.querySelector('#number-of-rounds-input').value;
@@ -109,7 +118,7 @@ function startGame() {
     rockCard.setAttribute('id', 'rock-card');
     rockCard.textContent = 'Rock';
     rockCard.addEventListener('click', () => {
-        playRound('rock');
+        playRound('Rock');
     });
     cardContainer.appendChild(rockCard);
 
@@ -118,7 +127,7 @@ function startGame() {
     paperCard.setAttribute('id', 'paper-card');
     paperCard.textContent = 'Paper';
     paperCard.addEventListener('click', () => {
-        playRound('paper');
+        playRound('Paper');
     })
     cardContainer.appendChild(paperCard);
 
@@ -127,7 +136,7 @@ function startGame() {
     scissorsCard.setAttribute('id', 'scissors-card');
     scissorsCard.textContent = 'Scissors';
     scissorsCard.addEventListener('click', () => {
-        playRound('scissors');
+        playRound('Scissors');
     });
     cardContainer.appendChild(scissorsCard);
 
