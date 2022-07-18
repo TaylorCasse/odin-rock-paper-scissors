@@ -57,3 +57,6 @@ function winCheck(playerInput, compInput) {
 const mainContainer = document.querySelector('#game-container');
 
 
+function Player() {
+    this.score = 0
+}
