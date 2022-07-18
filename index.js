@@ -176,3 +176,5 @@ function startGame() {
     mainContainer.appendChild(cardContainer);
 
 }
+
+// template https://www.crazygames.com/game/rock-paper-scissors
