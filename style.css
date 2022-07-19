@@ -24,6 +24,19 @@
     max-width: 50px;
 }
 
-h1, h3 {
+h1, h2, h3 {
     text-align: center;
+}
+
+#player-score, #opponent-score {
+    display: flex;
+    justify-content: center;
+}
+
+.score-block {
+    border-radius: 25px;
+}
+
+.score-block-filled {
+    color: blue;
 }

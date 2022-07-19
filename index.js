@@ -53,9 +53,31 @@ function winCheck(playerInput, compInput) {
 
 let playerWins = 0;
 let compWins = 0;
+let currentRound = 1;
+const playerScoreCard = document.querySelector('#player-score');
+const playerScoreBlocks = playerScoreCard.childNodes;
+const opponentScoreCard = document.querySelector('#opponent-score');
+const opponentScoreBlocks = opponentScoreCard.childNodes;
+console.log(playerScoreBlocks[1].classList.toggle('score-block-filled'));
+playerScoreBlocks[1].classList.toggle('score-block-filled');
+const roundsDisplay = document.querySelector('#current-round');
+
 function playRound(input) {
     const winStatus = winCheck(input, compChoice());
-    console.log(winStatus)
+    console.log(winStatus);
+    if (winStatus === 'Win') {
+        playerWins += 1;
+        for (let i; i < playerWins; i++) {
+            playerScoreBlocks[i].classList.toggle('score-block-filled');
+        }
+    } else if (winStatus === 'Lose') {
+        compWins += 1;
+    }
+    currentRound += 1;
+
+    // playerScoreCard.textContent = `${playerWins}`;
+    // opponentScoreCard.textContent = `${compWins}`;
+    roundsDisplay.textContent = `Round ${currentRound}`;
 }
 
 const mainContainer = document.querySelector('#game-container');
