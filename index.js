@@ -73,12 +73,13 @@ function playRound(input) {
         for (let i=0; i < playerWins; i++) {
             playerScoreBlocks[i].classList.add('score-block-filled');
         }
+        resultElement.textContent = "You win!";
     } else if (winStatus === 'Lose') {
         compWins += 1;
         for (let i=0; i < compWins; i++) {
             opponentScoreBlocks[i].classList.add('score-block-filled');
         }
-        resultElement.textContent
+        resultElement.textContent = "You lose...";
     } else {
         resultElement.textContent = 'Draw';
     }
