@@ -51,32 +51,39 @@ function winCheck(playerInput, compInput) {
     }
 }
 
+// Declaring global variables 
 let playerWins = 0;
 let compWins = 0;
 let currentRound = 1;
+
+// Assigning DOM elements
 const playerScoreCard = document.querySelector('#player-score');
-const playerScoreBlocks = playerScoreCard.childNodes;
+const playerScoreBlocks = playerScoreCard.children;
 const opponentScoreCard = document.querySelector('#opponent-score');
-const opponentScoreBlocks = opponentScoreCard.childNodes;
-console.log(playerScoreBlocks[1].classList.toggle('score-block-filled'));
-playerScoreBlocks[1].classList.toggle('score-block-filled');
+const opponentScoreBlocks = opponentScoreCard.children;
 const roundsDisplay = document.querySelector('#current-round');
+const resultElement = document.querySelector('#result-text');
 
 function playRound(input) {
-    const winStatus = winCheck(input, compChoice());
+    const compChoiceVar = compChoice()
+    const winStatus = winCheck(input, compChoiceVar);
     console.log(winStatus);
     if (winStatus === 'Win') {
         playerWins += 1;
-        for (let i; i < playerWins; i++) {
-            playerScoreBlocks[i].classList.toggle('score-block-filled');
+        for (let i=0; i < playerWins; i++) {
+            playerScoreBlocks[i].classList.add('score-block-filled');
         }
     } else if (winStatus === 'Lose') {
         compWins += 1;
+        for (let i=0; i < compWins; i++) {
+            opponentScoreBlocks[i].classList.add('score-block-filled');
+        }
+        resultElement.textContent
+    } else {
+        resultElement.textContent = 'Draw';
     }
     currentRound += 1;
 
-    // playerScoreCard.textContent = `${playerWins}`;
-    // opponentScoreCard.textContent = `${compWins}`;
     roundsDisplay.textContent = `Round ${currentRound}`;
 }
 
