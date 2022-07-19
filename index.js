@@ -17,9 +17,6 @@ function compChoice() {
     }
 }
 
-let playerWins = 0;
-let compWins = 0;
-
 function winCheck(playerInput, compInput) {
     // Checks the PLAYER'S win status
     switch (playerInput) {
@@ -54,7 +51,31 @@ function winCheck(playerInput, compInput) {
     }
 }
 
+let playerWins = 0;
+let compWins = 0;
+function playRound(input) {
+    const winStatus = winCheck(input, compChoice());
+    console.log(winStatus)
+}
+
 const mainContainer = document.querySelector('#game-container');
 
+rockCard = document.querySelector('#player-rock');
+rockCard.addEventListener('click', () => {
+    console.log("Rock pressed");
+    playRound('Rock');
+})
+
+paperCard = document.querySelector('#player-paper');
+paperCard.addEventListener('click', () => {
+    console.log("Paper pressed");
+    playRound('Paper');
+})
+
+scissorsCard = document.querySelector('#player-scissors');
+scissorsCard.addEventListener('click', () => {
+    console.log("Scissors pressed");
+    playRound('Scissors');
+})
 
 // template https://www.crazygames.com/game/rock-paper-scissors
