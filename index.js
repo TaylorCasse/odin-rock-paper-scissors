@@ -57,12 +57,22 @@ let compWins = 0;
 let currentRound = 1;
 
 // Assigning DOM elements
+const gameScreen = document.querySelector('#game-container');
 const playerScoreCard = document.querySelector('#player-score');
 const playerScoreBlocks = playerScoreCard.children;
 const opponentScoreCard = document.querySelector('#opponent-score');
 const opponentScoreBlocks = opponentScoreCard.children;
 const roundsDisplay = document.querySelector('#current-round');
 const resultElement = document.querySelector('#result-text');
+
+function gameOverScreen(playerWin) {
+    if (playerWin) {
+        gameScreen.textContent = 'Game over\nYou Win!!';
+
+    } else {
+        gameScreen.textContent = 'Game over\nYou lose...';
+    }
+}
 
 function playRound(input) {
     const compChoiceVar = compChoice()
@@ -85,11 +95,21 @@ function playRound(input) {
     }
 
     // if (playerWins === 3) {
-    //     document.querySelectorAll('.player-card').removeEventListener('click', testHandler)
+    //     gameOverScreen(true);
+    // } else if (compWins === 3) {
+    //     gameOverScreen(false);
+    // } else {
+    //     currentRound += 1;
+    //     roundsDisplay.textContent = `Round ${currentRound}`;
     // }
-    currentRound += 1;
 
-    roundsDisplay.textContent = `Round ${currentRound}`;
+    if (playerWins === 3 || compWins === 3) {
+        gameScreen.textContent = 'GAME OVER';
+    } else {
+        currentRound += 1;
+        roundsDisplay.textContent = `Round ${currentRound}`;
+    }
+
 }
 
 const mainContainer = document.querySelector('#game-container');
