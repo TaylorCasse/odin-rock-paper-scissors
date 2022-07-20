@@ -83,6 +83,10 @@ function playRound(input) {
     } else {
         resultElement.textContent = 'Draw';
     }
+
+    // if (playerWins === 3) {
+    //     document.querySelectorAll('.player-card').removeEventListener('click', testHandler)
+    // }
     currentRound += 1;
 
     roundsDisplay.textContent = `Round ${currentRound}`;
@@ -107,5 +111,23 @@ scissorsCard.addEventListener('click', () => {
     console.log("Scissors pressed");
     playRound('Scissors');
 })
+
+// const testHandler = function() {
+//     playRound('Rock');
+// };
+// rockCard = document.querySelector('#player-rock');
+// rockCard.addEventListener('click', testHandler);
+
+// paperCard = document.querySelector('#player-paper');
+// paperCard.addEventListener('click', () => {
+//     console.log("Paper pressed");
+//     playRound('Paper');
+// })
+
+// scissorsCard = document.querySelector('#player-scissors');
+// scissorsCard.addEventListener('click', () => {
+//     console.log("Scissors pressed");
+//     playRound('Scissors');
+// })
 
 // template https://www.crazygames.com/game/rock-paper-scissors
