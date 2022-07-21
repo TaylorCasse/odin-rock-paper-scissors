@@ -68,5 +68,17 @@ body {
 
 #result-text {
     text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
+#reload-button {
+    display: flex;
+    background-color: #003567;
+    max-width: 80px;
+    border: solid 1px white;
+    text-align: center;
+    border-radius: 10px;
+}

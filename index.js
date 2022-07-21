@@ -105,6 +105,13 @@ function playRound(input) {
 
     if (playerWins === 3 || compWins === 3) {
         gameScreen.textContent = 'GAME OVER';
+        const reloadButton = document.createElement('button');
+        reloadButton.setAttribute('id', 'reload-button');
+        reloadButton.textContent = 'Play again';
+        reloadButton.addEventListener('click', () => {
+            location.reload();
+        })
+        resultElement.appendChild(reloadButton);
     } else {
         currentRound += 1;
         roundsDisplay.textContent = `Round ${currentRound}`;
