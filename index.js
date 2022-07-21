@@ -65,19 +65,14 @@ const opponentScoreBlocks = opponentScoreCard.children;
 const roundsDisplay = document.querySelector('#current-round');
 const resultElement = document.querySelector('#result-text');
 
-function gameOverScreen(playerWin) {
-    if (playerWin) {
-        gameScreen.textContent = 'Game over\nYou Win!!';
-
-    } else {
-        gameScreen.textContent = 'Game over\nYou lose...';
-    }
+function playAnimations(input) {
+    i
 }
 
 function playRound(input) {
     const compChoiceVar = compChoice()
     const winStatus = winCheck(input, compChoiceVar);
-    console.log(winStatus);
+
     if (winStatus === 'Win') {
         playerWins += 1;
         for (let i=0; i < playerWins; i++) {
@@ -93,15 +88,6 @@ function playRound(input) {
     } else {
         resultElement.textContent = 'Draw';
     }
-
-    // if (playerWins === 3) {
-    //     gameOverScreen(true);
-    // } else if (compWins === 3) {
-    //     gameOverScreen(false);
-    // } else {
-    //     currentRound += 1;
-    //     roundsDisplay.textContent = `Round ${currentRound}`;
-    // }
 
     if (playerWins === 3 || compWins === 3) {
         gameScreen.textContent = 'GAME OVER';
@@ -119,13 +105,22 @@ function playRound(input) {
 
 }
 
+function gameOverScreen(playerWin) {
+    if (playerWin) {
+        gameScreen.textContent = 'Game over\nYou Win!!';
+
+    } else {
+        gameScreen.textContent = 'Game over\nYou lose...';
+    }
+}
+
 const mainContainer = document.querySelector('#game-container');
 
 rockCard = document.querySelector('#player-rock');
 rockCard.addEventListener('click', () => {
     console.log("Rock pressed");
     playRound('Rock');
-    document.querySelector('#opponent-rock').classList.toggle('fade-transition');
+    document.querySelector('#player-rock').classList.toggle('fade-transition');
 })
 
 paperCard = document.querySelector('#player-paper');
@@ -139,23 +134,5 @@ scissorsCard.addEventListener('click', () => {
     console.log("Scissors pressed");
     playRound('Scissors');
 })
-
-// const testHandler = function() {
-//     playRound('Rock');
-// };
-// rockCard = document.querySelector('#player-rock');
-// rockCard.addEventListener('click', testHandler);
-
-// paperCard = document.querySelector('#player-paper');
-// paperCard.addEventListener('click', () => {
-//     console.log("Paper pressed");
-//     playRound('Paper');
-// })
-
-// scissorsCard = document.querySelector('#player-scissors');
-// scissorsCard.addEventListener('click', () => {
-//     console.log("Scissors pressed");
-//     playRound('Scissors');
-// })
 
 // template https://www.crazygames.com/game/rock-paper-scissors
