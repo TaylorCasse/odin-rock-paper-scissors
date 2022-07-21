@@ -125,6 +125,7 @@ rockCard = document.querySelector('#player-rock');
 rockCard.addEventListener('click', () => {
     console.log("Rock pressed");
     playRound('Rock');
+    document.querySelector('#opponent-rock').classList.toggle('fade-transition');
 })
 
 paperCard = document.querySelector('#player-paper');
