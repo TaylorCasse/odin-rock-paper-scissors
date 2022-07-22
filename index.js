@@ -64,14 +64,14 @@ const opponentScoreCard = document.querySelector('#opponent-score');
 const opponentScoreBlocks = opponentScoreCard.children;
 const roundsDisplay = document.querySelector('#current-round');
 const resultElement = document.querySelector('#result-text');
+const rockCard = document.querySelector('#player-rock');
+const paperCard = document.querySelector('#player-paper');
+const scissorsCard = document.querySelector('#player-scissors');
+const mainContainer = document.querySelector('#game-container');
 
-function playAnimations(input) {
-    i
-}
-
-function playRound(input) {
+function playRound(playerChoice) {
     const compChoiceVar = compChoice()
-    const winStatus = winCheck(input, compChoiceVar);
+    const winStatus = winCheck(playerChoice, compChoiceVar);
 
     if (winStatus === 'Win') {
         playerWins += 1;
@@ -114,25 +114,37 @@ function gameOverScreen(playerWin) {
     }
 }
 
-const mainContainer = document.querySelector('#game-container');
 
-rockCard = document.querySelector('#player-rock');
+function playAnimations(playerChoice, botChoice) {
+    const cards = [rockCard, paperCard, scissorsCard];
+    let playerCard;
+    switch (playerChoice) {
+        case 'Rock':
+            playerCard = rockCard;
+        case 'Paper':
+            playerCard = paperCard;
+        case 'Scissors':
+            playerCard = scissorsCard;
+    }
+}
+
 rockCard.addEventListener('click', () => {
     console.log("Rock pressed");
     playRound('Rock');
     document.querySelector('#player-rock').classList.toggle('fade-transition');
 })
 
-paperCard = document.querySelector('#player-paper');
+
 paperCard.addEventListener('click', () => {
     console.log("Paper pressed");
     playRound('Paper');
 })
 
-scissorsCard = document.querySelector('#player-scissors');
 scissorsCard.addEventListener('click', () => {
     console.log("Scissors pressed");
     playRound('Scissors');
 })
+
+
 
 // template https://www.crazygames.com/game/rock-paper-scissors
