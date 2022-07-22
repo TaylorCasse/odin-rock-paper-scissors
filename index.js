@@ -64,10 +64,60 @@ const opponentScoreCard = document.querySelector('#opponent-score');
 const opponentScoreBlocks = opponentScoreCard.children;
 const roundsDisplay = document.querySelector('#current-round');
 const resultElement = document.querySelector('#result-text');
+
 const rockCard = document.querySelector('#player-rock');
+// const paperCard = document.querySelector('#player-paper');
+// const scissorsCard = document.querySelector('#player-scissors');
+
+
+
+function Card(type, element) {
+    this.type = type;
+    this.element = element;
+    this.chosen = function() {
+        this.element.classList.add('enlarged');
+    }
+    this.notChosen = function() {
+        this.element.classList.add('fade-transition');
+    }
+    this.reset = function() {
+        this.element.classList.remove('enlarged');
+        this.element.classList.remove('fade-transition');
+    }
+
+}
+
+function Player(name) {
+    this.name = name;
+    this.score = 0;
+    this.genCard = function() {        
+        const playerCard = document.createElement('div');
+        playerCard.setAttribute('class', 'player-container');
+
+        const heading = document.createElement('h3');
+        heading.textContent = `${this.name.toUpperCase()}'S SCORE`;
+        playerCard.appendChild(document.createElement('h3'));
+        
+        const scoreElement = document.createElement('div');
+        scoreElement.setAttribute('class', 'score-tracker');
+        
+        
+    }
+    this.scoreCard = document.querySelector('');
+    this.autoChoice = compChoice();
+}
+
+const playerRock = new Card('Rock', document.querySelector('#player-rock'));
+const playerPaper = new Card('Paper', document.querySelector('#player-paper'));
+const playerScissors = new Card('Scissor', document.querySelector('#player-scissors'));
+
+
 const paperCard = document.querySelector('#player-paper');
 const scissorsCard = document.querySelector('#player-scissors');
+
 const mainContainer = document.querySelector('#game-container');
+
+
 
 function playRound(playerChoice) {
     const compChoiceVar = compChoice()
@@ -131,7 +181,7 @@ function playAnimations(playerChoice, botChoice) {
 rockCard.addEventListener('click', () => {
     console.log("Rock pressed");
     playRound('Rock');
-    document.querySelector('#player-rock').classList.toggle('fade-transition');
+    playerRock.chosen();
 })
 
 
