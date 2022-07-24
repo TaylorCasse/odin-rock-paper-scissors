@@ -5,16 +5,15 @@ function randIntFromInterval(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
-function compChoice() {
-    const compNumChoice = randIntFromInterval(1, 3);
-    switch (compNumChoice) {
-        case 1:
-            return 'Rock';
-        case 2:
-            return 'Paper';
-        case 3:
-            return 'Scissors';
-    }
+const cardListRPS = ['Rock', 'Paper', 'Scissors'];
+const cardListRPSLS = ['Rock', 'Paper', 'Scissors', 'Lizard', 'Spock'];
+
+const rpsls = true;
+let activeList;
+if (rpsls) {
+    activeList = cardListRPSLS;
+} else {
+    activeList = cardListRPS;
 }
 
 function winCheck(playerInput, compInput) {
@@ -28,15 +27,23 @@ function winCheck(playerInput, compInput) {
                     return 'Lose';
                 case 'Scissors':
                     return 'Win';
+                case 'Lizard':
+                    return 'Win';
+                case 'Spock':
+                    return 'Lose';
             }
         case 'Paper':
             switch (compInput) {
                 case 'Rock':
-                    return 'Win'
+                    return 'Win';
                 case 'Paper':
-                    return 'Draw'
+                    return 'Draw';
                 case 'Scissors':
-                    return 'Lose'
+                    return 'Lose';
+                case 'Lizard':
+                    return 'Lose';
+                case 'Spock':
+                    return 'Win';
             }
 
         case 'Scissors':
@@ -47,7 +54,40 @@ function winCheck(playerInput, compInput) {
                     return 'Win';
                 case 'Scissors':
                     return 'Draw';
+                case 'Lizard':
+                    return 'Win';
+                case 'Spock':
+                    return 'Lose';
             }
+
+        case 'Lizard':
+            switch (compInput) {
+                case 'Rock':
+                    return 'Lose';
+                case 'Paper':
+                    return 'Win';
+                case 'Scissors':
+                    return 'Lose';
+                case 'Lizard':
+                    return 'Draw';
+                case 'Spock':
+                    return 'Win';
+            }
+
+        case 'Spock':
+            switch (compInput) {
+                case 'Rock':
+                    return 'Win';
+                case 'Paper':
+                    return 'Lose';
+                case 'Scissors':
+                    return 'Win';
+                case 'Lizard':
+                    return 'Lose';
+                case 'Spock':
+                    return 'Draw';
+            }
+
     }
 }
 
@@ -71,97 +111,146 @@ const paperCard = document.querySelector('#player-paper');
 const scissorsCard = document.querySelector('#player-scissors');
 
 
-
 function Card(type) {
     this.type = type;
-    this.img = `./IMG/SVG/${this.type}.svg`
-
+    this.img = `./IMG/SVG/${this.type}.svg`;
     this.element = document.createElement('img');
-    this.element.setAttribute('class', 'card');
+    this.element.classList.toggle('card');
     this.element.setAttribute('src', this.img);
+    this.element.classList.toggle('player-card');
     this.element.addEventListener('click', () => {
         playRound(this.type);
     })
-    this.element.addEventListener('mouseover', () => {
-        this.element.classList.toggle('enlarged');
-        console.log('Hovered');
-    })
-    this.element.addEventListener('mouseleave', () =>{
-        this.element.classList.toggle('enlarged');
-        console.log('Unhovered');
+
+    document.addEventListener('keydown', () => {
+        console.log('keydown')
+        this.reset()
     })
 
-    this.makeElement = function() {
-        const card = document.createElement('img');
-        card.setAttribute('class', 'card');
-        card.setAttribute('src', this.img);
+    this.fade = function() {
+        this.element.classList.toggle('fade-transition');
     }
-    this.chosen = function() {
-        this.element.classList.add('enlarged');
+    
+    this.enlarge = function() {
+        this.element.classList.toggle('enlarged');
     }
-    this.notChosen = function() {
-        this.element.classList.add('fade-transition');
-    }
+
     this.reset = function() {
-        this.element.classList.remove('enlarged');
-        this.element.classList.remove('fade-transition');
+        this.element.removeAttribute('class');
+        this.element.classList.toggle('card');
+        this.element.classList.toggle('player-card');
     }
-
 }
 
-const test2 = new Card('Paper');
-console.log(test2.element);
-
-gameScreen.appendChild(test2.element);
-
-function Player(name, img) {
+function Player(name) {
     this.name = name;
-    this.img = img;
     this.score = 0;
+    this.element = document.createElement('div');
+    this.scoreElement = document.createElement('div');
+    this.hand = []
+    for (let card of activeList) {
+        const currentCard = new Card(card);
+        this.hand.push(currentCard);
+    }
     this.genCard = function() {        
         const playerCard = document.createElement('div');
         playerCard.setAttribute('class', 'player-container');
 
         const heading = document.createElement('h3');
         heading.textContent = `${this.name.toUpperCase()}'S SCORE`;
-        playerCard.appendChild(document.createElement('h3'));
-        
-        const scoreElement = document.createElement('div');
-        scoreElement.setAttribute('class', 'score-tracker');
 
-        const scoreBlock = document.createElement('div');
-        scoreBlock.setAttribute('score-tracker');
+        
+        playerCard.appendChild(heading);
+    
+        this.scoreElement.setAttribute('class', 'score-tracker');
 
         const winsToWin = 3;
         for (let i = 0; i < winsToWin; i++) {
-            scoreElement.appendChild(scoreBlock);
+            const scoreBlock = document.createElement('div');
+            scoreBlock.setAttribute('class', 'score-block');    
+            this.scoreElement.appendChild(scoreBlock);
         }
 
-        playerCard.appendChild(scoreElement);
-
+        playerCard.appendChild(this.scoreElement);
         const cardContainer = document.createElement('div');
-        // const rockCard = new Card('rock', )
-        
+        cardContainer.setAttribute('class', 'card-container');
+        for (let cardType of activeList) {
+            let card = new Card (cardType);
+            cardContainer.appendChild(card.element);
+        }
+        playerCard.appendChild(cardContainer);
+        return playerCard;
     }
+    // this.win = function() {
+    //     this.score += 1;
+    //     for (let card of )
+    // }
     this.card = document.querySelector('.player-container');
     this.scoreCard = document.querySelector('#player-score');
-    this.autoChoice = compChoice();
+    this.autoChoice = function() {
+        return activeList[randIntFromInterval(0, activeList.length)];
+    };
+    this.choice = this.autoChoice();
 }
 
-const test = new Player('Taylor');
-console.log(test);
-for (let i = 0; i < 10; i++ ) {
-    console.log(`${i}`)
-    mainContainer.appendChild(test.card);
+const playerName = 'Taylor';
+const player = new Player(playerName);
+const botList = [];
+gameScreen.appendChild(player.genCard());
+
+botNames = ['Chappie', 'Johnny Five', 'Wall-E', 'Optimus Prime', 'HAL 9000', 'Your Phone', 'Cayde-6', 'Mecha Godzilla'];
+numberOfBots = 3;
+for (let i = 0; i < numberOfBots; i++) {
+    randName = botNames[randIntFromInterval(0, botNames.length - 1)];    // Get a random bot name
+    newBot = new Player(randName);
+    gameScreen.appendChild(newBot.genCard());
+    botList.push(newBot);
 }
 
-const playerRock = new Card('Rock', document.querySelector('#player-rock'));
-const playerPaper = new Card('Paper', document.querySelector('#player-paper'));
-const playerScissors = new Card('Scissor', document.querySelector('#player-scissors'));
 
+// function playRound(playerChoice) {
+//     const compChoiceVar = compChoice()
+//     const winStatus = winCheck(playerChoice, compChoiceVar);
+
+//     if (winStatus === 'Win') {
+//         playerWins += 1;
+//         for (let i=0; i < playerWins; i++) {
+//             playerScoreBlocks[i].classList.add('score-block-filled');
+//         }
+//         resultElement.textContent = "You win!";
+//     } else if (winStatus === 'Lose') {
+//         compWins += 1;
+//         for (let i=0; i < compWins; i++) {
+//             opponentScoreBlocks[i].classList.add('score-block-filled');
+//         }
+//         resultElement.textContent = "You lose...";
+//     } else {
+//         resultElement.textContent = 'Draw';
+//     }
+
+//     if (playerWins === 3 || compWins === 3) {
+//         gameScreen.textContent = 'GAME OVER';
+//         const reloadButton = document.createElement('button');
+//         reloadButton.setAttribute('id', 'reload-button');
+//         reloadButton.textContent = 'Play again';
+//         reloadButton.addEventListener('click', () => {
+//             location.reload();
+//         })
+//         resultElement.appendChild(reloadButton);
+//     } else {
+//         currentRound += 1;
+//         roundsDisplay.textContent = `Round ${currentRound}`;
+//     }
+
+// }
 
 function playRound(playerChoice) {
-    const compChoiceVar = compChoice()
+    
+    for (bot in botList) {
+        console.log(bot.choice);
+    }
+    
+    const compChoiceVar = botList[0].autoChoice();
     const winStatus = winCheck(playerChoice, compChoiceVar);
 
     if (winStatus === 'Win') {
