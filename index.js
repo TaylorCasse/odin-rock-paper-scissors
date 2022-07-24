@@ -115,23 +115,11 @@ function gameOverScreen(playerWin) {
 }
 
 
-function playAnimations(playerChoice, botChoice) {
-    const cards = [rockCard, paperCard, scissorsCard];
-    let playerCard;
-    switch (playerChoice) {
-        case 'Rock':
-            playerCard = rockCard;
-        case 'Paper':
-            playerCard = paperCard;
-        case 'Scissors':
-            playerCard = scissorsCard;
-    }
-}
 
 rockCard.addEventListener('click', () => {
     console.log("Rock pressed");
     playRound('Rock');
-    document.querySelector('#player-rock').classList.toggle('fade-transition');
+    // document.querySelector('#player-rock').classList.toggle('fade-transition');
 })
 
 
