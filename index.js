@@ -64,16 +64,38 @@ const opponentScoreCard = document.querySelector('#opponent-score');
 const opponentScoreBlocks = opponentScoreCard.children;
 const roundsDisplay = document.querySelector('#current-round');
 const resultElement = document.querySelector('#result-text');
+const mainContainer = document.querySelector('#game-container');
 
 const rockCard = document.querySelector('#player-rock');
-// const paperCard = document.querySelector('#player-paper');
-// const scissorsCard = document.querySelector('#player-scissors');
+const paperCard = document.querySelector('#player-paper');
+const scissorsCard = document.querySelector('#player-scissors');
 
 
 
-function Card(type, element) {
+function Card(type) {
     this.type = type;
-    this.element = element;
+    this.img = `./IMG/SVG/${this.type}.svg`
+
+    this.element = document.createElement('img');
+    this.element.setAttribute('class', 'card');
+    this.element.setAttribute('src', this.img);
+    this.element.addEventListener('click', () => {
+        playRound(this.type);
+    })
+    this.element.addEventListener('mouseover', () => {
+        this.element.classList.toggle('enlarged');
+        console.log('Hovered');
+    })
+    this.element.addEventListener('mouseleave', () =>{
+        this.element.classList.toggle('enlarged');
+        console.log('Unhovered');
+    })
+
+    this.makeElement = function() {
+        const card = document.createElement('img');
+        card.setAttribute('class', 'card');
+        card.setAttribute('src', this.img);
+    }
     this.chosen = function() {
         this.element.classList.add('enlarged');
     }
@@ -87,8 +109,14 @@ function Card(type, element) {
 
 }
 
-function Player(name) {
+const test2 = new Card('Paper');
+console.log(test2.element);
+
+gameScreen.appendChild(test2.element);
+
+function Player(name, img) {
     this.name = name;
+    this.img = img;
     this.score = 0;
     this.genCard = function() {        
         const playerCard = document.createElement('div');
@@ -100,23 +128,36 @@ function Player(name) {
         
         const scoreElement = document.createElement('div');
         scoreElement.setAttribute('class', 'score-tracker');
-        
+
+        const scoreBlock = document.createElement('div');
+        scoreBlock.setAttribute('score-tracker');
+
+        const winsToWin = 3;
+        for (let i = 0; i < winsToWin; i++) {
+            scoreElement.appendChild(scoreBlock);
+        }
+
+        playerCard.appendChild(scoreElement);
+
+        const cardContainer = document.createElement('div');
+        // const rockCard = new Card('rock', )
         
     }
-    this.scoreCard = document.querySelector('');
+    this.card = document.querySelector('.player-container');
+    this.scoreCard = document.querySelector('#player-score');
     this.autoChoice = compChoice();
+}
+
+const test = new Player('Taylor');
+console.log(test);
+for (let i = 0; i < 10; i++ ) {
+    console.log(`${i}`)
+    mainContainer.appendChild(test.card);
 }
 
 const playerRock = new Card('Rock', document.querySelector('#player-rock'));
 const playerPaper = new Card('Paper', document.querySelector('#player-paper'));
 const playerScissors = new Card('Scissor', document.querySelector('#player-scissors'));
-
-
-const paperCard = document.querySelector('#player-paper');
-const scissorsCard = document.querySelector('#player-scissors');
-
-const mainContainer = document.querySelector('#game-container');
-
 
 
 function playRound(playerChoice) {

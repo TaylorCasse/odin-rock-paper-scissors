@@ -92,6 +92,6 @@ body {
     opacity: 0%;
 }
 
-/* .fade-transition:hover {
+.fade-transition:hover {
     opacity: 0%
-} */
+}
