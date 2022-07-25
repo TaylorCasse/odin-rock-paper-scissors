@@ -8,7 +8,7 @@ function randIntFromInterval(min, max) {
 const cardListRPS = ['Rock', 'Paper', 'Scissors'];
 const cardListRPSLS = ['Rock', 'Paper', 'Scissors', 'Lizard', 'Spock'];
 
-const rpsls = true;
+const rpsls = false;
 let activeList;
 const gameMode = 'First to 3';
 if (rpsls) {
@@ -196,6 +196,14 @@ function Player(name) {
         return activeList[randIntFromInterval(0, activeList.length - 1)];
     };
 
+    this.botSanitize = function() {
+        for (let card of this.hand) {
+            card.removeEventListener('click');
+            card.classList.toggle('player-card');
+        }
+
+    }
+
 }
 
 
@@ -211,10 +219,10 @@ const botList = [];
 gameScreen.appendChild(player.genCard());
 
 botNames = ['Chappie', 'Johnny Five', 'Wall-E', 'Optimus Prime', 'HAL 9000', 'Your Phone', 'Cayde-6', 'Mecha Godzilla'];
-// numberOfBots = 3;
 for (let i = 0; i < numberOfBots; i++) {
-    randName = botNames[randIntFromInterval(0, botNames.length - 1)];    // Get a random bot name
-    newBot = new Player(randName);
+    let randName = botNames[randIntFromInterval(0, botNames.length - 1)];    // Get a random bot name
+    let newBot = new Player(randName);
+    newBot.botSanitize();
     gameScreen.appendChild(newBot.genCard());
     botList.push(newBot);
 }
@@ -274,7 +282,7 @@ function playRound(playerChoice) {
         for (let j = 0; j < playerList.length; j++) {
             let status = winCheck(playerList[i].choice, playerList[j].choice);
             
-            console.log(`${playerList[j]}: ${status}`);
+            // console.log(`${playerList[j].name}: ${status}`);
             if (status === 'Win') {
                 playerList[i].roundScore += 1;
             }
@@ -284,7 +292,8 @@ function playRound(playerChoice) {
     // Finds the player with the highest round score
     let highestRoundScore = 0;
     for (let player of playerList) {
-        console.log(`${player.name}'s round score: ${player.roundScore}`);
+        console.log(`${player.name}'s choice: ${player.choice}`);
+        // console.log(`${player.name}'s round score: ${player.roundScore}`);
         if (player.roundScore > highestRoundScore) {
             highestRoundScore = player.roundScore;
         }
@@ -292,7 +301,7 @@ function playRound(playerChoice) {
     console.log(highestRoundScore)
 
     for (let player of playerList) {
-        if (player.roundScore === highestRoundScore) {
+        if (player.roundScore === highestRoundScore && player.roundScore > 0) {
             player.winRound()
         }
     }
