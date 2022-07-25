@@ -147,40 +147,60 @@ function Card(type) {
 function Player(name) {
     this.name = name;
     this.score = 0;
-    this.element = document.createElement('div');
-    this.scoreElement = document.createElement('div');
     this.hand = []
+
+    // Generate DOM Elements
+    this.element = document.createElement('div');
+    this.element.setAttribute('class', 'player-container');
+
+    const heading = document.createElement('h3');
+    heading.textContent = `${this.name.toUpperCase()}'S SCORE`;
+
+    this.scoreElement = document.createElement('div');
+    this.scoreElement.setAttribute('class', 'score-tracker');
+    const winsToWin = 3;
+    for (let i = 0; i < winsToWin; i++) {
+        const scoreBlock = document.createElement('div');
+        scoreBlock.setAttribute('class', 'score-block');    
+        this.scoreElement.appendChild(scoreBlock);
+    }
+
     this.cardContainer = document.createElement('div');
+    this.cardContainer.setAttribute('class', 'card-container');
+
     for (let cardType of activeList) {
         const currentCard = new Card(cardType);
         this.hand.push(currentCard);
         this.cardContainer.appendChild(currentCard.element);
     }
-    this.genCard = function() {        
-        const playerCard = document.createElement('div');
-        playerCard.setAttribute('class', 'player-container');
 
-        const heading = document.createElement('h3');
-        heading.textContent = `${this.name.toUpperCase()}'S SCORE`;
+    // Append DOM elements
+    this.element.appendChild(heading);
+    this.element.appendChild(this.scoreElement);
+    this.element.appendChild(this.cardContainer);
+    // this.element.appendChild()
+
+
+    // this.genCard = function() {        
+    //     const playerCard = document.createElement('div');
+    //     playerCard.setAttribute('class', 'player-container');
+
+
 
         
-        playerCard.appendChild(heading);
+    //     playerCard.appendChild(heading);
     
-        this.scoreElement.setAttribute('class', 'score-tracker');
+        
 
-        const winsToWin = 3;
-        for (let i = 0; i < winsToWin; i++) {
-            const scoreBlock = document.createElement('div');
-            scoreBlock.setAttribute('class', 'score-block');    
-            this.scoreElement.appendChild(scoreBlock);
-        }
+        
 
-        playerCard.appendChild(this.scoreElement);
-        this.cardContainer.setAttribute('class', 'card-container');
 
-        playerCard.appendChild(this.cardContainer);
-        return playerCard;
-    }
+    //     playerCard.appendChild(this.scoreElement);
+        
+
+    //     playerCard.appendChild(this.cardContainer);
+    //     return playerCard;
+    // }
 
 
     this.winRound = function() {
@@ -216,14 +236,14 @@ switch (gameMode) {
 const playerName = 'Taylor';
 const player = new Player(playerName);
 const botList = [];
-gameScreen.appendChild(player.genCard());
+gameScreen.appendChild(player.element);
 
 botNames = ['Chappie', 'Johnny Five', 'Wall-E', 'Optimus Prime', 'HAL 9000', 'Your Phone', 'Cayde-6', 'Mecha Godzilla'];
 for (let i = 0; i < numberOfBots; i++) {
     let randName = botNames[randIntFromInterval(0, botNames.length - 1)];    // Get a random bot name
     let newBot = new Player(randName);
     newBot.botSanitize();
-    gameScreen.appendChild(newBot.genCard());
+    gameScreen.appendChild(newBot.element);
     botList.push(newBot);
 }
 
