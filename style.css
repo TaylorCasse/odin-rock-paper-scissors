@@ -1,0 +1,99 @@
+* {
+    /* border: 1px white solid; */
+    margin: 5px;
+    padding: 5px;
+    color: white;
+}
+
+#game-container {
+    display: flex;
+   
+    justify-content: center;
+    flex-wrap: wrap;
+
+}
+
+.player-container {
+    display: flex;
+    flex-direction: column;
+    border: 1px white solid;
+    border-radius: 10px;
+
+}
+
+.card-container {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    width: 210px;
+}
+
+.card {
+    max-width: 50px;
+    border: none;
+    filter: invert(99%) sepia(99%) saturate(2%) hue-rotate(220deg) brightness(104%) contrast(100%);
+}
+
+.player-card {
+    transition: transform 150ms;
+}
+
+.player-card:hover {
+    transform: scale(1.1);
+}
+
+.enlarged {
+    transform: scale(1.1);
+}
+
+h1, h2, h3 {
+    text-align: center;
+}
+
+.score-tracker {
+    display: flex;
+    justify-content: center;
+}
+
+.score-block {
+    border-radius: 25px;
+    border: 1px white solid;
+    
+}
+
+.score-block-filled {
+    background-color: white;
+    border: 1px white solid;
+
+}
+
+body {
+    background-image: url(./IMG/blue-gradient-background.jpg)
+}
+
+#result-text {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#reload-button {
+    display: flex;
+    background-color: #003567;
+    max-width: 80px;
+    border: solid 1px white;
+    text-align: center;
+    border-radius: 10px;
+}
+
+.fade-transition {
+    transition: opacity 150ms;
+    opacity: 0%;
+}
+
+.fade-transition:hover {
+    opacity: 0%
+}
+
