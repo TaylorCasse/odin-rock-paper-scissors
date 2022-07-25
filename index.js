@@ -122,6 +122,7 @@ function Card(type) {
     this.element.addEventListener('click', () => {
         playRound(this.type);
     })
+    
 
     document.addEventListener('keydown', () => {
         console.log('keydown')
@@ -149,9 +150,11 @@ function Player(name) {
     this.element = document.createElement('div');
     this.scoreElement = document.createElement('div');
     this.hand = []
-    for (let card of activeList) {
-        const currentCard = new Card(card);
+    this.cardContainer = document.createElement('div');
+    for (let cardType of activeList) {
+        const currentCard = new Card(cardType);
         this.hand.push(currentCard);
+        this.cardContainer.appendChild(currentCard.element);
     }
     this.genCard = function() {        
         const playerCard = document.createElement('div');
@@ -173,13 +176,9 @@ function Player(name) {
         }
 
         playerCard.appendChild(this.scoreElement);
-        const cardContainer = document.createElement('div');
-        cardContainer.setAttribute('class', 'card-container');
-        for (let cardType of activeList) {
-            let card = new Card (cardType);
-            cardContainer.appendChild(card.element);
-        }
-        playerCard.appendChild(cardContainer);
+        this.cardContainer.setAttribute('class', 'card-container');
+
+        playerCard.appendChild(this.cardContainer);
         return playerCard;
     }
 
@@ -198,8 +197,9 @@ function Player(name) {
 
     this.botSanitize = function() {
         for (let card of this.hand) {
-            card.removeEventListener('click');
-            card.classList.toggle('player-card');
+            // card.removeEventListener('click', playRound);
+            card.element.classList.remove('player-card');
+            console.log(card.element);
         }
 
     }
@@ -293,7 +293,6 @@ function playRound(playerChoice) {
     let highestRoundScore = 0;
     for (let player of playerList) {
         console.log(`${player.name}'s choice: ${player.choice}`);
-        // console.log(`${player.name}'s round score: ${player.roundScore}`);
         if (player.roundScore > highestRoundScore) {
             highestRoundScore = player.roundScore;
         }
