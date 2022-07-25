@@ -99,17 +99,17 @@ let currentRound = 1;
 
 // Assigning DOM elements
 const gameScreen = document.querySelector('#game-container');
-const playerScoreCard = document.querySelector('#player-score');
-const playerScoreBlocks = playerScoreCard.children;
-const opponentScoreCard = document.querySelector('#opponent-score');
-const opponentScoreBlocks = opponentScoreCard.children;
-const roundsDisplay = document.querySelector('#current-round');
-const resultElement = document.querySelector('#result-text');
-const mainContainer = document.querySelector('#game-container');
+// const playerScoreCard = document.querySelector('#player-score');
+// const playerScoreBlocks = playerScoreCard.children;
+// const opponentScoreCard = document.querySelector('#opponent-score');
+// const opponentScoreBlocks = opponentScoreCard.children;
+// const roundsDisplay = document.querySelector('#current-round');
+// const resultElement = document.querySelector('#result-text');
+// const mainContainer = document.querySelector('#game-container');
 
-const rockCard = document.querySelector('#player-rock');
-const paperCard = document.querySelector('#player-paper');
-const scissorsCard = document.querySelector('#player-scissors');
+// const rockCard = document.querySelector('#player-rock');
+// const paperCard = document.querySelector('#player-paper');
+// const scissorsCard = document.querySelector('#player-scissors');
 
 
 function Card(type) {
@@ -182,12 +182,16 @@ function Player(name) {
         playerCard.appendChild(cardContainer);
         return playerCard;
     }
-    // this.win = function() {
-    //     this.score += 1;
-    //     for (let card of )
-    // }
-    this.card = document.querySelector('.player-container');
-    this.scoreCard = document.querySelector('#player-score');
+
+
+    this.winRound = function() {
+        this.score += 1;
+        for (let i = 0; i < this.score; i++) {
+            this.scoreElement.children[i].classList.add('score-block-filled');
+        }
+    }
+
+
     this.autoChoice = function() {
         return activeList[randIntFromInterval(0, activeList.length - 1)];
     };
@@ -214,7 +218,6 @@ for (let i = 0; i < numberOfBots; i++) {
     gameScreen.appendChild(newBot.genCard());
     botList.push(newBot);
 }
-console.log(botList)
 
 
 // function playRound(playerChoice) {
@@ -255,9 +258,43 @@ console.log(botList)
 
 function playRound(playerChoice) {
     
+    player.choice = playerChoice;
+    playerList = [player];
+
+    // Bots make their choice, generate array of all players with choices
     for (let bot of botList) {
         bot.choice = bot.autoChoice()
-        console.log(bot.choice);
+        playerList.push(bot);
+    }
+
+    // Compares the choices of all players and adds up each players wins in this round
+    console.log('Round')
+    for (let i = 0; i < playerList.length; i++) {
+        playerList[i].roundScore = 0;
+        for (let j = 0; j < playerList.length; j++) {
+            let status = winCheck(playerList[i].choice, playerList[j].choice);
+            
+            console.log(`${playerList[j]}: ${status}`);
+            if (status === 'Win') {
+                playerList[i].roundScore += 1;
+            }
+        }
+    }
+
+    // Finds the player with the highest round score
+    let highestRoundScore = 0;
+    for (let player of playerList) {
+        console.log(`${player.name}'s round score: ${player.roundScore}`);
+        if (player.roundScore > highestRoundScore) {
+            highestRoundScore = player.roundScore;
+        }
+    }
+    console.log(highestRoundScore)
+
+    for (let player of playerList) {
+        if (player.roundScore === highestRoundScore) {
+            player.winRound()
+        }
     }
     
     const compChoiceVar = botList[0].autoChoice();
@@ -305,35 +342,35 @@ function gameOverScreen(playerWin) {
 }
 
 
-function playAnimations(playerChoice, botChoice) {
-    const cards = [rockCard, paperCard, scissorsCard];
-    let playerCard;
-    switch (playerChoice) {
-        case 'Rock':
-            playerCard = rockCard;
-        case 'Paper':
-            playerCard = paperCard;
-        case 'Scissors':
-            playerCard = scissorsCard;
-    }
-}
+// function playAnimations(playerChoice, botChoice) {
+//     const cards = [rockCard, paperCard, scissorsCard];
+//     let playerCard;
+//     switch (playerChoice) {
+//         case 'Rock':
+//             playerCard = rockCard;
+//         case 'Paper':
+//             playerCard = paperCard;
+//         case 'Scissors':
+//             playerCard = scissorsCard;
+//     }
+// }
 
-rockCard.addEventListener('click', () => {
-    console.log("Rock pressed");
-    playRound('Rock');
-    playerRock.chosen();
-})
+// rockCard.addEventListener('click', () => {
+//     console.log("Rock pressed");
+//     playRound('Rock');
+//     playerRock.chosen();
+// })
 
 
-paperCard.addEventListener('click', () => {
-    console.log("Paper pressed");
-    playRound('Paper');
-})
+// paperCard.addEventListener('click', () => {
+//     console.log("Paper pressed");
+//     playRound('Paper');
+// })
 
-scissorsCard.addEventListener('click', () => {
-    console.log("Scissors pressed");
-    playRound('Scissors');
-})
+// scissorsCard.addEventListener('click', () => {
+//     console.log("Scissors pressed");
+//     playRound('Scissors');
+// })
 
 
 
