@@ -92,10 +92,10 @@ function winCheck(playerInput, compInput) {
     }
 }
 
-// Declaring global variables 
-let playerWins = 0;
-let compWins = 0;
-let currentRound = 1;
+// // Declaring global variables 
+// let playerWins = 0;
+// let compWins = 0;
+// let currentRound = 1;
 
 // Assigning DOM elements
 const gameScreen = document.querySelector('#game-container');
@@ -118,12 +118,7 @@ function Card(type) {
     this.element = document.createElement('img');
     this.element.classList.toggle('card');
     this.element.setAttribute('src', this.img);
-    this.element.classList.toggle('player-card');
-    this.element.addEventListener('click', () => {
-        playRound(this.type);
-    })
     
-
     document.addEventListener('keydown', () => {
         console.log('keydown')
         this.reset()
@@ -136,16 +131,11 @@ function Card(type) {
     this.enlarge = function() {
         this.element.classList.toggle('enlarged');
     }
-
-    this.reset = function() {
-        this.element.removeAttribute('class');
-        this.element.classList.toggle('card');
-        this.element.classList.toggle('player-card');
-    }
 }
 
-function Player(name) {
+function Player(name, isBot) {
     this.name = name;
+    this.isBot = isBot;
     this.score = 0;
     this.hand = []
 
@@ -169,7 +159,26 @@ function Player(name) {
     this.cardContainer.setAttribute('class', 'card-container');
 
     for (let cardType of activeList) {
-        const currentCard = new Card(cardType);
+        let currentCard = new Card(cardType);
+
+        // Gives click event, hover transition and modified reset function 
+        // if the card is owned by a human player
+        if (!this.isBot) {
+            currentCard.element.classList.toggle('hover-transition');
+            currentCard.element.addEventListener('click', () => {
+                playRound(currentCard.type);
+            })
+            currentCard.reset = function() {
+                this.element.removeAttribute('class');
+                this.element.classList.toggle('card');
+                this.element.classList.toggle('hover-transition');
+            }
+        } else {
+            currentCard.reset = function() {
+                this.element.removeAttribute('class');
+                this.element.classList.toggle('card');
+            }
+        }
         this.hand.push(currentCard);
         this.cardContainer.appendChild(currentCard.element);
     }
@@ -178,30 +187,6 @@ function Player(name) {
     this.element.appendChild(heading);
     this.element.appendChild(this.scoreElement);
     this.element.appendChild(this.cardContainer);
-    // this.element.appendChild()
-
-
-    // this.genCard = function() {        
-    //     const playerCard = document.createElement('div');
-    //     playerCard.setAttribute('class', 'player-container');
-
-
-
-        
-    //     playerCard.appendChild(heading);
-    
-        
-
-        
-
-
-    //     playerCard.appendChild(this.scoreElement);
-        
-
-    //     playerCard.appendChild(this.cardContainer);
-    //     return playerCard;
-    // }
-
 
     this.winRound = function() {
         this.score += 1;
@@ -210,6 +195,12 @@ function Player(name) {
         }
     }
 
+    this.reset = function() {
+        this.score = 0;
+        for (let i = 0; i < this.scoreElement.children.length; i++) {
+            this.scoreElement.children[i].classList.remove('score-block-filled');
+        }
+    }
 
     this.autoChoice = function() {
         return activeList[randIntFromInterval(0, activeList.length - 1)];
@@ -218,7 +209,7 @@ function Player(name) {
     this.botSanitize = function() {
         for (let card of this.hand) {
             // card.removeEventListener('click', playRound);
-            card.element.classList.remove('player-card');
+            card.element.classList.remove('hover-transition');
             console.log(card.element);
         }
 
@@ -230,18 +221,25 @@ function Player(name) {
 // Game set-up
 switch (gameMode) {
     case 'First to 3':
-        numberOfBots = 3
+        numberOfBots = 9
 }
 
+
+
 const playerName = 'Taylor';
-const player = new Player(playerName);
+const player = new Player(playerName, false);
 const botList = [];
 gameScreen.appendChild(player.element);
+document.addEventListener('keydown', () => {
+    player.reset();
+})
 
 botNames = ['Chappie', 'Johnny Five', 'Wall-E', 'Optimus Prime', 'HAL 9000', 'Your Phone', 'Cayde-6', 'Mecha Godzilla'];
 for (let i = 0; i < numberOfBots; i++) {
-    let randName = botNames[randIntFromInterval(0, botNames.length - 1)];    // Get a random bot name
-    let newBot = new Player(randName);
+    const botNameIndex = randIntFromInterval(0, botNames.length - 1)
+    let randName = botNames[botNameIndex];      // Get a random bot name
+    botNames.splice(botNameIndex, 1);           // Ensure unique names
+    let newBot = new Player(randName, true);
     newBot.botSanitize();
     gameScreen.appendChild(newBot.element);
     botList.push(newBot);
@@ -295,14 +293,12 @@ function playRound(playerChoice) {
         playerList.push(bot);
     }
 
-    // Compares the choices of all players and adds up each players wins in this round
+    // Compares the choices of all players and adds up each players wins (round score) in this round
     console.log('Round')
     for (let i = 0; i < playerList.length; i++) {
         playerList[i].roundScore = 0;
         for (let j = 0; j < playerList.length; j++) {
             let status = winCheck(playerList[i].choice, playerList[j].choice);
-            
-            // console.log(`${playerList[j].name}: ${status}`);
             if (status === 'Win') {
                 playerList[i].roundScore += 1;
             }

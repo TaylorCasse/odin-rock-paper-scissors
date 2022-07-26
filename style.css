@@ -34,11 +34,11 @@
     filter: invert(99%) sepia(99%) saturate(2%) hue-rotate(220deg) brightness(104%) contrast(100%);
 }
 
-.player-card {
+.hover-transition {
     transition: transform 150ms;
 }
 
-.player-card:hover {
+.hover-transition:hover {
     transform: scale(1.1);
 }
 
