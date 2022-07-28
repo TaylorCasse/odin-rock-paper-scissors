@@ -321,7 +321,7 @@ function initialize() {
     }
     
 }
-// Assigning DOM elements
+// Assigning global DOM elements
 const gameScreen = document.querySelector('#game-container');
 const playerName = 'Taylor';
 const player = new Player(playerName, false);
