@@ -5,16 +5,14 @@ function randIntFromInterval(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
-const cardListRPS = ['Rock', 'Paper', 'Scissors'];
-const cardListRPSLS = ['Rock', 'Paper', 'Scissors', 'Lizard', 'Spock'];
 
-const rpsls = false;
+const rpsls = true;
 let activeList;
 const gameMode = 'First to 3';
 if (rpsls) {
-    activeList = cardListRPSLS;
+    activeList = ['Rock', 'Paper', 'Scissors', 'Lizard', 'Spock'];
 } else {
-    activeList = cardListRPS;
+    activeList = ['Rock', 'Paper', 'Scissors'];
 }
 
 function winCheck(playerInput, compInput) {
@@ -95,10 +93,11 @@ function winCheck(playerInput, compInput) {
 // // Declaring global variables 
 // let playerWins = 0;
 // let compWins = 0;
-// let currentRound = 1;
+
 
 // Assigning DOM elements
 const gameScreen = document.querySelector('#game-container');
+const roundTracker = document.querySelector('#current-round');
 
 function Card(type) {
     this.type = type;
@@ -125,7 +124,7 @@ function Player(name, isBot) {
     this.name = name;
     this.isBot = isBot;
     this.score = 0;
-    this.hand = []
+    this.hand = [];
 
     // Generate DOM Elements
     this.element = document.createElement('div');
@@ -194,12 +193,15 @@ function Player(name, isBot) {
     };
 
 }
+botNames = ['Chappie', 'Johnny Five', 'Wall-E', 'Optimus Prime', 'HAL 9000', 'Your Phone', 'Cayde-6', 'Mecha Godzilla'];
 
 
 // Game set-up
 switch (gameMode) {
     case 'First to 3':
-        numberOfBots = 9;
+        // numberOfBots = botNames.length;
+        numberOfBots = 15;
+
         winsToWin = 3;
 }
 
@@ -213,53 +215,16 @@ document.addEventListener('keydown', () => {
     player.reset();
 })
 
-botNames = ['Chappie', 'Johnny Five', 'Wall-E', 'Optimus Prime', 'HAL 9000', 'Your Phone', 'Cayde-6', 'Mecha Godzilla'];
 for (let i = 0; i < numberOfBots; i++) {
     const botNameIndex = randIntFromInterval(0, botNames.length - 1)
-    let randName = botNames[botNameIndex];      // Get a random bot name
-    botNames.splice(botNameIndex, 1);           // Ensure unique names
-    let newBot = new Player(randName, true);
+    const randName = botNames[botNameIndex];      // Get a random bot name
+    // botNames.splice(botNameIndex, 1);           // Ensure unique names
+    const newBot = new Player(randName, true);
     gameScreen.appendChild(newBot.element);
     botList.push(newBot);
 }
 
-
-// function playRound(playerChoice) {
-//     const compChoiceVar = compChoice()
-//     const winStatus = winCheck(playerChoice, compChoiceVar);
-
-//     if (winStatus === 'Win') {
-//         playerWins += 1;
-//         for (let i=0; i < playerWins; i++) {
-//             playerScoreBlocks[i].classList.add('score-block-filled');
-//         }
-//         resultElement.textContent = "You win!";
-//     } else if (winStatus === 'Lose') {
-//         compWins += 1;
-//         for (let i=0; i < compWins; i++) {
-//             opponentScoreBlocks[i].classList.add('score-block-filled');
-//         }
-//         resultElement.textContent = "You lose...";
-//     } else {
-//         resultElement.textContent = 'Draw';
-//     }
-
-//     if (playerWins === 3 || compWins === 3) {
-//         gameScreen.textContent = 'GAME OVER';
-//         const reloadButton = document.createElement('button');
-//         reloadButton.setAttribute('id', 'reload-button');
-//         reloadButton.textContent = 'Play again';
-//         reloadButton.addEventListener('click', () => {
-//             location.reload();
-//         })
-//         resultElement.appendChild(reloadButton);
-//     } else {
-//         currentRound += 1;
-//         roundsDisplay.textContent = `Round ${currentRound}`;
-//     }
-
-// }
-
+let currentRound = 1;
 function playRound(playerChoice) {
     
     player.choice = playerChoice;
@@ -308,27 +273,35 @@ function playRound(playerChoice) {
 
     }
 
-    if (winners.length === 1) {
-        gameScreen.textContent = `${winners[0].name} wins!`;
-        // for (winner )
-    } else if (winners.length === 2) {
-        gameScreen.textContent = `${winners[0].name} and ${winners[1].name} win!`;
-        for (let winner of winners) {
-            console.log(winner);
-        }
-        
+    currentRound += 1;
+    roundTracker.textContent = `Round ${currentRound}`;
+
+
+    if (winnerFound) {
+        gameOver(winners);
     }
 
 
 
 }
 
-function gameOverScreen(playerWin) {
-    if (playerWin) {
-        gameScreen.textContent = 'Game over\nYou Win!!';
 
+function gameOver(winners) {
+    if (winners.length === 1) {
+        gameScreen.textContent = `${winners[0].name} wins!`;
+    } else if (winners.length === 2) {
+        gameScreen.textContent = `${winners[0].name} and ${winners[1].name} win!`;
+        for (let winner of winners) {
+            console.log(winner);
+        }
     } else {
-        gameScreen.textContent = 'Game over\nYou lose...';
+        let outputString = '';
+        for (let i = 0; i < winners.length; i++) {
+            outputString += winner[i].name + ', '
+            if (i === winners.length) {
+                outputString += ` and ${winners[winners.length]} win!`;
+            }
+        }
     }
 }
 
